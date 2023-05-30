@@ -151,3 +151,68 @@ class ImpliedVolatility(PricingBS):
                 ivs_retraites.append(iv)
 
         return (strikes, ivs_retraites)
+
+if __name__=="__main__" : 
+    print("----------------------------------------------------------------------")
+    print("Welcome on the implied volatilities module ")
+    print("----------------------------------------------------------------------")
+
+    print("----------------------------------------------------------------------")
+    print("A demo simulation will be launched")
+    print("----------------------------------------------------------------------")
+
+    import pandas as pd 
+
+    spy_opt = pd.read_csv(
+        "ressources/spy-options.csv",
+    ).dropna()
+    spy_opt.columns = [
+        col + "_call" if ".1" not in col and col != "Strike" else col
+        for col in spy_opt.columns
+    ]
+    spy_opt.columns = [col.replace(".1", "_put") for col in spy_opt.columns]
+    spy_opt["IV_call"] = spy_opt["IV_call"].apply(lambda x: float(x.replace("%", "")) / 100)
+    spy_opt["IV_put"] = spy_opt["IV_put"].apply(lambda x: float(x.replace("%", "")) / 100)
+    spy_opt["Last_call"] = spy_opt["Last_call"].apply(lambda x: float(x))
+    spy_opt["Last_put"] = spy_opt["Last_put"].apply(lambda x: float(x))
+    call_example = spy_opt.sort_values("Volume_call", ascending=False).iloc[0]
+
+    # Last_call              27.9
+    # Bid_call              27.85
+    # Ask_call              28.18
+    # Change_call            27.9
+    # Volume_call             962
+    # Open Int_call         2,741
+    # IV_call              0.1815
+    # Last Trade_call    05/26/23
+    # Strike                410.0
+    # Last_put              12.45
+    # Bid_put               12.24
+    # Ask_put                12.4
+    # Change_put            12.45
+    # Volume_put            1,234
+    # Open Int_put         20,292
+    # IV_put               0.1831
+    # Last Trade_put     05/26/23
+    # Name: 47, dtype: object
+
+    s0 = 420.02  # 29 may 2023
+    dt = 146 / 252  # in years, expiration date : 20 october 2023
+
+    ivs = ImpliedVolatility(
+        s0=s0,
+        strike=call_example.Strike,
+        dt=dt,
+        interest_rate=0.05 * dt,  # fed rate  multiplied by our period of time
+        volatility=0.1326,
+    )
+
+    ivs.show_implied_vol_and_compare(
+        marketPrices_call=spy_opt["Last_call"].tolist(),
+        marketPrices_put=spy_opt["Last_put"].tolist(),
+        strikes=spy_opt.Strike.tolist(),
+        marketVols=spy_opt.IV_call.tolist(),
+    )
+    print("----------------------------------------------------------------------")
+    print("End of the demo, bye.\n\n Author : Adrien Calas - Le23RayGorbella - le23rg@icloud.com")
+    print("----------------------------------------------------------------------")

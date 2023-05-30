@@ -14,14 +14,14 @@ import scipy.stats as stats
 @dataclass(init=True, repr=True)
 class PricingGBM:
     """Pricing of an asset after a period time with the Geometric Brownion Motion & Monte Carlo simulations
-        current_price: float -> current asset price or assets_price
-        mu: float -> interest free rate term
-        sigma: float -> volatility term
-        nb_steps: int -> number of steps that will be used by the Geometric Brownian Motion to simulate path. If dt != -1, nb_steps will be ignored.
-        maturity: float -> end of simulation FROM NOW
-        dt: float = -1  -> duration of step
-        nb_simulations: int = 100 -> nb_simulations 
-        drift: float = "" -> drif term of the Geometric Brownian Motion
+    current_price: float -> current asset price or assets_price
+    mu: float -> interest free rate term
+    sigma: float -> volatility term
+    nb_steps: int -> number of steps that will be used by the Geometric Brownian Motion to simulate path. If dt != -1, nb_steps will be ignored.
+    maturity: float -> end of simulation FROM NOW
+    dt: float = -1  -> duration of step
+    nb_simulations: int = 100 -> nb_simulations
+    drift: float = "" -> drif term of the Geometric Brownian Motion
     """
 
     current_price: float  # current asset price or assets_price
@@ -39,7 +39,7 @@ class PricingGBM:
     def __post_init__(self):
         # create the time grid
         self.get_time_grid()
-        # if drift not in args, we calculate the drift of the Geometric Brownian Motion 
+        # if drift not in args, we calculate the drift of the Geometric Brownian Motion
         if self.drift == "":
             self.drift = self.mu - (self.sigma**2) / 2
 
@@ -74,7 +74,7 @@ class PricingGBM:
         """Create pricer based on the Geometric Brownian Motion from a time series.
 
         Args:
-            time_series (list|iterable): prices series 
+            time_series (list|iterable): prices series
             nb_steps (int): number of steps for the simulation
             maturity (int|flaot): end of the simulation (may be deprecated)
             returns (list, optional): returns series in order to calibrate the normal distribution. Defaults to [].
@@ -89,14 +89,12 @@ class PricingGBM:
         ### Calibration of normal distribution ###
         ##########################################
 
-        ### if returns is not empty, we calibrate the normal distrbution from returns 
+        ### if returns is not empty, we calibrate the normal distrbution from returns
         if len(returns) > 0:
             mu, sigma = cls.calibrate_params_from_times_series(returns)
         ### else we calibrate the normal distrbution from time_series (time_series should be normally distributed)
         else:
-            mu, sigma = cls.calibrate_params_from_times_series(
-                time_series=time_series
-            )
+            mu, sigma = cls.calibrate_params_from_times_series(time_series=time_series)
 
         current_price = 0
 
@@ -128,7 +126,7 @@ class PricingGBM:
         """
         Master function to simulate <nb_simulations> from the Geometric Brownian Motion solution
 
-        Affect the attribute simulations to the instance as : 
+        Affect the attribute simulations to the instance as :
         self.simulations = {
             "time": self.time_grid,
             "simulations": [
@@ -158,7 +156,7 @@ class PricingGBM:
     def factor_brownian_motion_sol(self):
         """
         Returns:
-           factor_brownian_motion : a step of the simulation to multply to the precedent value 
+           factor_brownian_motion : a step of the simulation to multply to the precedent value
         """
         if self.dt > 0:
             return np.exp(
@@ -174,8 +172,7 @@ class PricingGBM:
             )
 
     def see_simulations(self):
-        """Helper function to see the simulated paths
-        """
+        """Helper function to see the simulated paths"""
         fig = go.Figure()
         [
             fig.add_trace(go.Scatter(x=self.simulations["time"], y=une_simulation))
@@ -186,22 +183,20 @@ class PricingGBM:
         pass
 
     def simulate_and_see(self):
-        """Helper function to simulate multiple paths of the Geometric Brownian Motion and see the results
-        """
+        """Helper function to simulate multiple paths of the Geometric Brownian Motion and see the results"""
         ########################
         ## Simulate the paths ##
         ########################
 
         self.simulate_multiple_path_gbm_sol()
-        
+
         ######################
         ## See simulations ##
         ######################
         self.see_simulations()
 
     def get_time_grid(self):
-        """Create time grid for the paths
-        """
+        """Create time grid for the paths"""
         if self.dt != -1:
             nb_points = self.maturity // self.dt
             time_grid = [self.dt * i for i in range(nb_points)]
@@ -217,18 +212,20 @@ class PricingGBM:
 @dataclass
 class PricingGBMPortfolio(PricingGBM):
     """Pricing of a portfolio after a period time with the Geometric Brownion Motion & Monte Carlo simulations
-        current_price: float -> current asset price or assets_price
-        mu: float -> interest free rate term
-        sigma: float -> volatility term
-        nb_steps: int -> number of steps that will be used by the Geometric Brownian Motion to simulate path. If dt != -1, nb_steps will be ignored.
-        maturity: float -> end of simulation FROM NOW
-        correlation_matrix : np.array -> correlation matrix of the portfolio
-        dt: float = -1  -> duration of step
-        nb_simulations: int = 100 -> nb_simulations 
-        drift: float = "" -> drif term of the Geometric Brownian Motion
+    current_price: float -> current asset price or assets_price
+    mu: float -> interest free rate term
+    sigma: float -> volatility term
+    nb_steps: int -> number of steps that will be used by the Geometric Brownian Motion to simulate path. If dt != -1, nb_steps will be ignored.
+    maturity: float -> end of simulation FROM NOW
+    correlation_matrix : np.array -> correlation matrix of the portfolio
+    dt: float = -1  -> duration of step
+    nb_simulations: int = 100 -> nb_simulations
+    drift: float = "" -> drif term of the Geometric Brownian Motion
     """
+
     correlation_matrix: np.array = np.array([])
     nb_steps = 1
+
     def __post_init__(self):
         super().__post_init__()
         ###################
@@ -236,35 +233,29 @@ class PricingGBMPortfolio(PricingGBM):
         ###################
         if self.dt < 0:
             self.dt = self.maturity / self.nb_steps
-        
+
         ########################################################
         ## Create Cholesky matrix to compute correlated paths ##
         ########################################################
         self.L = np.linalg.cholesky(self.correlation_matrix)
 
-
-
     def gbm_sol_matrix_normal(
         self,
-    ):  
-        """Create paths for the assets portfolio according to the Black&Scholes formula and correlation (Cholesky matrix)
-        """
+    ):
+        """Create paths for the assets portfolio according to the Black&Scholes formula and correlation (Cholesky matrix)"""
         return self.current_price * np.exp(
             self.drift * self.maturity
             + self.sigma
             * np.sqrt(self.maturity)
             * np.matmul(
-                self.L, stats.norm.rvs(size=(len(self.current_price), self.nb_simulations))
+                self.L,
+                stats.norm.rvs(size=(len(self.current_price), self.nb_simulations)),
             )
         )
 
     def paths_of_portfolio(self):
-        """Returns all the simulated end price of the portfolio  
-        """
+        """Returns all the simulated end price of the portfolio"""
         return np.sum(self.gbm_sol_matrix_normal(), axis=0)
-    
-    
-    
 
 
 if __name__ == "__main__":
@@ -276,11 +267,9 @@ if __name__ == "__main__":
     print("A demo simulation will be launched")
     print("----------------------------------------------------------------------")
 
-    
     ### Datas for the test ###
 
     import yfinance as yf
-
 
     sp500 = yf.Ticker("^GSPC")
     hist_sp500 = sp500.history("1y")
@@ -288,7 +277,6 @@ if __name__ == "__main__":
     returns_serie = hist_sp500.dropna().returns
 
     #################################################
-
 
     ### Pricing with Geometric Brownian Motion ###
     pricer = PricingGBM.create_pricing_GBM_from_time_series(
@@ -300,12 +288,59 @@ if __name__ == "__main__":
     )
     pricer.simulate_and_see()
 
+    ### Pricing with Geometric Brownian Motion on multiple assets ###
+
+    import pandas as pd
+
+    aapl = yf.Ticker("AAPL")
+    hist_aapl = aapl.history("1y")
+    hist_aapl["returns"] = hist_aapl.Close / hist_aapl.Close.shift(1) - 1
+    returns_serie_aapl = hist_aapl.dropna().returns
+    portfolio_time_series = np.array(
+        [
+            hist_sp500.Close.tolist(),
+            hist_aapl.Close.tolist(),
+        ]
+    )
+    array_time_series = np.array(
+        [
+            (pd.Series(asset) / pd.Series(asset).shift(1) - 1).tolist()
+            for asset in portfolio_time_series
+        ]
+    )
+    array_time_series = [
+        [value for value in values if np.isnan(value) == False]
+        for values in array_time_series
+    ]
+
+    assets_volatilities = np.sqrt(np.var(array_time_series, axis=1))
+    cov_matrix = np.corrcoef(portfolio_time_series)
+    # TODO : use np.reshape lazy man
+    assets_volatilities = np.array([[vol] for vol in assets_volatilities])
+    portfolio = PricingGBMPortfolio(
+        current_price=np.array(
+            [
+                [hist_sp500.Close[-1]],
+                [hist_aapl.Close[-1]],
+            ]
+        ),
+        mu=0.05 * 1 / 252,
+        sigma=assets_volatilities,
+        maturity=1,
+        nb_steps=1,
+        correlation_matrix=cov_matrix,
+    )
+    end_paths = (portfolio.paths_of_portfolio())
+    paths =  [[np.sum(portfolio.current_price) , endprice] for endprice in end_paths]
+    fig = go.Figure()
+    [
+        fig.add_trace(go.Scatter(x=[0,1], y=path))
+        for path in paths
+    ]
+    fig.update_layout(showlegend=False)
+    fig.show()
     #################################################
 
     print("----------------------------------------------------------------------")
-    print("End of the demo, bye.\n\n Author : Adrien Calas - Le23RayGorbella")
+    print("End of the demo, bye.\n\n Author : Adrien Calas - Le23RayGorbella - le23rg@icloud.com")
     print("----------------------------------------------------------------------")
-
-    
-    
-    

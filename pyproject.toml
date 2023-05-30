@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0", "yfinance>=0.1.70", "plotly>=5.6.0"]
+requires = ["setuptools>=61.0", "yfinance>=0.1.70", "plotly>=5.6.0", "pandas"]
 build-backend = "setuptools.build_meta"
 
 [project]
