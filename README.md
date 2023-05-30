@@ -10,7 +10,7 @@
 
 ### [Linkedin](https://www.linkedin.com/in/adrien-calas-881132151/)
 
-## Available : european options pricing, Implied Volatilities, Geometrical Brownian Motion for assets and portfolios, Value at Risk & Conditional Value at Risk (work in progress for portfolio)
+## Available : european options pricing, implied volatilities, geometrical brownian motion for assets and portfolios, value at risk & conditional value at risk (work in progress for portfolio)
 
 ### European options pricing
 
