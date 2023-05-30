@@ -1,2 +1,6 @@
-src/__pycache__/*
+src/quant23rg/__pycache__/*
 pyproject.toml
+*.txt
+*.pyc
+dist/*
+PKG-INFO
