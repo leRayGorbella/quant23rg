@@ -5,7 +5,7 @@
 ## Install it by typing this command in your command prompt 
 
 ```
-pip install quant23rg==0.0.3
+pip install quant23rg==0.0.4
 ```
 
 ## The package is still in progress
