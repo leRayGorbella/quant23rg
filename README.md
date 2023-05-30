@@ -18,7 +18,7 @@ pip install quant23rg==0.0.5
 
 ## Available : european options pricing, implied volatilities, geometrical brownian motion for assets and portfolios, value at risk & conditional value at risk (work in progress for portfolio)
 
-## You can also test the package by using this repo [quant23rg test folder](https://github.com/leRayGorbella/quant23rg_test_folder)
+### You can also test the package by using this repo [quant23rg test folder](https://github.com/leRayGorbella/quant23rg_test_folder)
 
 ### European options pricing
 
