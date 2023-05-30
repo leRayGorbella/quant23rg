@@ -2,6 +2,12 @@
 
 ## quant23rg is python package for quantitative analysis
 
+## Install it by typing this command in your command prompt 
+
+```
+pip install quant23rg
+```
+
 ## The package is still in progress
 
 ### Author : Adrien Calas - Le23RayGorbella (Freelancer)
