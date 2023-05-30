@@ -8,9 +8,11 @@
 
 ### [Click here to contact by mail](mailto:le23rg@icloud.com?subject=[From%20quant23rg%20package]), Location : Paris and Nice, France
 
-## Available : Pricing european options, Implied volatilities, Geometrical Brownian Motion for assets and portfolios, Value at Risk & Conditional Value at Risk (work in progress for portfolio)
+### [Linkedin](https://www.linkedin.com/in/adrien-calas-881132151/), Location : Paris and Nice, France
 
-### Pricing european options
+## Available : european options pricing, Implied Volatilities, Geometrical Brownian Motion for assets and portfolios, Value at Risk & Conditional Value at Risk (work in progress for portfolio)
+
+### European options pricing
 
 ```python
 from pricingCallEuropBS import PricingCallEuropBS
