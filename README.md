@@ -21,14 +21,9 @@ pip install quant23rg
 ### European options pricing
 
 ```python
-from pricingCallEuropBS import PricingCallEuropBS
-from pricingPutEuropBS import PricingPutEuropBS
-
-
 import pandas as pd
-from implied_volatility import ImpliedVolatility
-from pricingCallEuropBS import PricingCallEuropBS
-from pricingPutEuropBS import PricingPutEuropBS
+from quant23rg.pricingCallEuropBS import PricingCallEuropBS
+from quant23rg.pricingPutEuropBS import PricingPutEuropBS
 
 spy_opt = pd.read_csv(
     "spy-options.csv",
@@ -90,6 +85,7 @@ put_pricing.payoff_sigma_fixed()
 
 ```python
 ### See volatility smile (Strike -> IV(Strike)) ###
+from quant23rg.implied_volatility import ImpliedVolatility
 
 ivs = ImpliedVolatility(
     s0=s0,
@@ -112,7 +108,7 @@ ivs.show_implied_vol_and_compare(
 ### Geometrical Brownian Motion for assets and portfolios
 
 ```python
-from pricingGBM import PricingGBM, PricingGBMPortfolio
+from quant23rg.pricingGBM import PricingGBM, PricingGBMPortfolio
 import yfinance as yf
 
 
@@ -141,7 +137,7 @@ pricer.simulate_and_see()
 
 
 ### Value at Risk (one asset) ###
-from riskManagement import RiskManagementOneAsset
+from quant23rg.riskManagement import RiskManagementOneAsset
 
 rkManageHistoric = RiskManagementOneAsset(returns_serie, input_type="returns")
 rkManageNormal = RiskManagementOneAsset(
@@ -180,7 +176,7 @@ print(
 
 import yfinance as yf
 import numpy as np
-from riskManagement import RiskManagementPortfolio
+from quant23rg.riskManagement import RiskManagementPortfolio
 
 ## Datas for the test
 sp500 = yf.Ticker("^GSPC")
