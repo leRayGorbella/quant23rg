@@ -1,5 +1,7 @@
 # Welcome on the quant23rg package
 
+## quant23rg is python package for quantitative analysis
+
 ## The package is still in progress
 
 ### Author : Adrien Calas - Le23RayGorbella (Freelancer)
