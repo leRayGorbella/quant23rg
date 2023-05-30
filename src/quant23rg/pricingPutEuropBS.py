@@ -1,4 +1,4 @@
-from pricingBS import PricingBS
+from quant23rg.pricingBS import PricingBS
 from dataclasses import dataclass
 from scipy import stats, optimize
 import numpy as np

@@ -3,7 +3,7 @@ import collections
 from scipy.stats import norm
 import numpy as np
 
-from pricingGBM import PricingGBM, PricingGBMPortfolio
+from quant23rg.pricingGBM import PricingGBM, PricingGBMPortfolio
 
 
 @dataclass

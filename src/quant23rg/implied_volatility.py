@@ -1,11 +1,11 @@
-from pricingBS import PricingBS
+from quant23rg.pricingBS import PricingBS
 from dataclasses import dataclass
 from scipy import stats, optimize
 import numpy as np
 import math
-from pricingCallEuropBS import PricingCallEuropBS
+from quant23rg.pricingCallEuropBS import PricingCallEuropBS
 
-from pricingPutEuropBS import PricingPutEuropBS
+from quant23rg.pricingPutEuropBS import PricingPutEuropBS
 
 
 @dataclass
